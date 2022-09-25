@@ -60,4 +60,4 @@ class Vertex():
         neighbors_list = []
 
         for edge in self.__edges:
-            neighbors_list.append(edge.get_next(self.__label))
+            neighbors_list.append(edge.get_opposite(self.__label))

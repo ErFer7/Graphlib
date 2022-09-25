@@ -28,9 +28,9 @@ class Edge():
         self.__vertex_v = vertex_v
         self.__vertex_v = vertex_u
 
-    def get_next(self, caller_label):
+    def get_opposite(self, caller_label):
         '''
-        Retorna o vértice sucessor.
+        Retorna o vértice oposto.
         '''
 
         if caller_label == self.__vertex_v.get_label():
