@@ -12,15 +12,15 @@ class Vertex():
     '''
 
     # Atributos privados
-    __label: str
-    __degree: int
-    __edges: list
+    _label: str
+    _degree: int
+    _neighbors: list
 
     def __init__(self, label: str) -> None:
 
-        self.__label = label
-        self.__edges = []
-        self.__degree = 0
+        self._label = label
+        self._degree = 0
+        self._neighbors = []
 
     # Métodos utilitários
     def get_label(self) -> str:
@@ -28,36 +28,26 @@ class Vertex():
         Retorna o rótulo.
         '''
 
-        return self.__label
+        return self._label
 
     def get_degree(self) -> int:
         '''
         Retorna o grau atual.
         '''
 
-        return self.__degree
+        return self._degree
 
-    def get_edge(self, e_index: int):
+    def connect(self, vertex) -> None:
         '''
-        Retorna uma aresta.
-        '''
-
-        return self.__edges[e_index]
-
-    def connect(self, edge) -> None:
-        '''
-        Conecta o vértice a uma aresta.
+        Conecta o vértice a outro.
         '''
 
-        self.__edges.append(edge)
-        self.__degree += 1
+        self._neighbors.append(vertex)
+        self._degree += 1
 
     def neighbors(self) -> list:
         '''
         Retorna uma lista com os vértices da vizinhança.
         '''
 
-        neighbors_list = []
-
-        for edge in self.__edges:
-            neighbors_list.append(edge.get_opposite(self.__label))
+        return self._neighbors

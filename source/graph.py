@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 '''
+Graphlib v0.1
+
 Módulo para o processamento de grafos.
 '''
 
+from math import inf
 from source.vertex import Vertex
-from source.edge import Edge
 
 
 class Graph():
@@ -15,37 +17,49 @@ class Graph():
     '''
 
     # Atributos privados
-    __vertices: list
-    __edges: list
+    _vertices: list
+    _edges: list
 
     def __init__(self, file_name: str = None) -> None:
 
-        self.__vertices = []
-        self.__edges = []
+        self._vertices = []
+        self._edges = []
 
-        if file_name is not None:
+        if file_name is None:
+            return
 
-            lines = ''
+        lines = ''
 
-            with open(file_name, 'r', encoding="utf-8") as file:
-                lines = file.readlines()
+        with open(file_name, 'r', encoding="utf-8") as file:
+            lines = file.readlines()
 
-            adding_vertices = True
+        adding_vertices = True
 
-            for line in lines[1:]:
+        for line in lines[1:]:
 
-                if adding_vertices:
+            if adding_vertices:
 
-                    if not line.startswith("*edges"):
-                        self.add_vertex(Vertex(line.split()[1]))
-                    else:
-                        adding_vertices = False
+                if not line.startswith("*edges"):
+                    self.add_vertex(Vertex(line.split()[1]))
                 else:
+                    adding_vertices = False
 
-                    v_index = int(line.split()[0])
-                    u_index = int(line.split()[1])
-                    weight = float(line.split()[2])
-                    self.connect_vertices(v_index, u_index, weight)
+                    for i in range(self.vertex_count()):
+                        self._edges.append([])
+                        for _ in range(self.vertex_count()):
+                            self._edges[i].append(inf)
+            else:
+
+                v_index = int(line.split()[0])
+                u_index = int(line.split()[1])
+                weight = float(line.split()[2])
+
+                self._edges[v_index - 1][u_index - 1] = weight
+                self._edges[u_index - 1][v_index - 1] = weight
+                self.connect_vertices(v_index, u_index)
+
+    def __repr__(self) -> str:
+        return "Representação não implementada"
 
     # Métodos utilitários
     def add_vertex(self, vertex: Vertex) -> None:
@@ -53,15 +67,22 @@ class Graph():
         Adiciona um vértice.
         '''
 
-        self.__vertices.append(vertex)
+        self._vertices.append(vertex)
 
-    def connect_vertices(self, v_index: int, u_index: int, weight: float) -> None:
+    def get_vertex(self, v_index) -> Vertex:
+        '''
+        Retorna um vértice.
+        '''
+
+        return self._vertices[v_index - 1]
+
+    def connect_vertices(self, v_index: int, u_index: int) -> None:
         '''
         Adiciona um vértice.
         '''
 
-        self.__edges.append(Edge(weight))
-        self.__edges[-1].connect(self.__vertices[v_index - 1], self.__vertices[u_index - 1])
+        self._vertices[v_index - 1].connect(self._vertices[u_index - 1])
+        self._vertices[u_index - 1].connect(self._vertices[v_index - 1])
 
     # Métodos obrigatórios
     def vertex_count(self) -> int:
@@ -69,42 +90,46 @@ class Graph():
         Retorna a quantidade de vértices.
         '''
 
-        return len(self.__vertices)
+        return len(self._vertices)
 
     def edge_count(self) -> int:
         '''
         Retorna a quantidade de arestas.
         '''
 
-        return len(self.__edges)
+        return len(self._edges)
 
     def degree(self, v_index: int) -> int:
         '''
         Retorna o grau do vértice v.
         '''
 
-        return self.__vertices[v_index - 1].get_degree()
+        return self._vertices[v_index - 1].get_degree()
 
     def label(self, v_index: int) -> str:
         '''
         Retorna o rótulo do vértice v.
         '''
 
-        return self.__vertices[v_index - 1].get_label()
+        return self._vertices[v_index - 1].get_label()
 
     def neighbors(self, v_index: int) -> list:
         '''
         Retorna os vizinhos do vértice v.
         '''
 
-        return self.__vertices[v_index - 1].neighbors()
+        return self._vertices[v_index - 1].neighbors()
 
     def has_edge(self, v_index: int, u_index: int) -> bool:
         '''
         Se {u, v} ∈ E, retorna verdadeiro; se não existir, retorna falso.
         '''
 
+        return self._edges[v_index - 1][u_index - 1] != inf
+
     def weight(self, v_index: int, u_index: int) -> float:
         '''
         Se {u, v} ∈ E, retorna o peso da aresta {u, v}; se não existir, retorna um valor infinito positivo.
         '''
+
+        return self._edges[v_index - 1][u_index - 1]
