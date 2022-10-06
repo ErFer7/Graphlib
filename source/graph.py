@@ -83,6 +83,12 @@ class Graph():
 
         self._vertices[v_index - 1].connect(self._vertices[u_index - 1])
         self._vertices[u_index - 1].connect(self._vertices[v_index - 1])
+    
+    def get_edges(self) -> List:
+        '''
+        Retorna lista de arestas
+        '''
+        return self._edges
 
     # Métodos obrigatórios
     def vertex_count(self) -> int:
