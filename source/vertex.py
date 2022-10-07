@@ -51,7 +51,7 @@ class Vertex():
         '''
 
         return self._neighbors
-    
+
     def __repr__(self) -> str:
         '''
         Retorna o rótulo quando chamado diretamente por outra func

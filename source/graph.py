@@ -18,7 +18,7 @@ class Graph():
 
     # Atributos privados
     _vertices: list
-    _edges: list
+    _edges: list[list]
 
     def __init__(self, file_name: str = None) -> None:
 
@@ -83,8 +83,8 @@ class Graph():
 
         self._vertices[v_index - 1].connect(self._vertices[u_index - 1])
         self._vertices[u_index - 1].connect(self._vertices[v_index - 1])
-    
-    def get_edges(self) -> List:
+
+    def get_edges(self) -> list:
         '''
         Retorna lista de arestas
         '''
