@@ -22,12 +22,10 @@ class Vertex():
         self._degree = 0
         self._neighbors = []
 
-    # Métodos utilitários
-    def get_label(self) -> str:
+    def __repr__(self) -> str:
         '''
-        Retorna o rótulo.
+        Retorna o rótulo quando chamado diretamente por outra func
         '''
-
         return self._label
 
     def get_degree(self) -> int:
@@ -37,12 +35,12 @@ class Vertex():
 
         return self._degree
 
-    def connect(self, vertex) -> None:
+    def connect(self, v_index) -> None:
         '''
         Conecta o vértice a outro.
         '''
 
-        self._neighbors.append(vertex)
+        self._neighbors.append(v_index)
         self._degree += 1
 
     def neighbors(self) -> list:
@@ -51,9 +49,3 @@ class Vertex():
         '''
 
         return self._neighbors
-
-    def __repr__(self) -> str:
-        '''
-        Retorna o rótulo quando chamado diretamente por outra func
-        '''
-        return self._label

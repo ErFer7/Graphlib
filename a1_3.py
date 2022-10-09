@@ -14,4 +14,4 @@ def buscaCiclo(G,v,C):
     pass
 
         
-graph = Graph(join("graphs", "graph_2.txt"))
+graph = Graph(join("graphs", "test_graph.net"))

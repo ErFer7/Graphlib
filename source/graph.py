@@ -17,7 +17,7 @@ class Graph():
     '''
 
     # Atributos privados
-    _vertices: list
+    _vertices: list[Vertex]
     _edges: list[list]
 
     def __init__(self, file_name: str = None) -> None:
@@ -81,8 +81,8 @@ class Graph():
         Adiciona um vértice.
         '''
 
-        self._vertices[v_index - 1].connect(self._vertices[u_index - 1])
-        self._vertices[u_index - 1].connect(self._vertices[v_index - 1])
+        self._vertices[v_index - 1].connect(u_index)
+        self._vertices[u_index - 1].connect(v_index)
 
     def get_edges(self) -> list:
         '''
@@ -117,7 +117,7 @@ class Graph():
         Retorna o rótulo do vértice v.
         '''
 
-        return self._vertices[v_index - 1].get_label()
+        return str(self._vertices[v_index - 1])
 
     def neighbors(self, v_index: int) -> list:
         '''

@@ -8,4 +8,4 @@ from os.path import join
 from source.graph import Graph
 
 
-graph = Graph(join("graphs", "graph_3.txt"))
+graph = Graph(join("graphs", "test_graph.net"))
