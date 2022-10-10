@@ -75,6 +75,52 @@ def hierholzer(graph: Graph) -> tuple[bool, list]:
     '''
     Algoritmo de Hierholzer para a busca de ciclos Eulerianos.
     '''
+    availableVertices = {i: graph.neighbors(i) for i in range(graph.vertex_count())}
+
+    for value in availableVertices.values():
+        if len(value) % 2 != 0:
+            return (False, [])
+
+    begin = -1
+    for key, value in availableVertices.items():
+        if len(value) > 0:
+            begin = key
+            break
+    if begin == -1:
+        return (False, [])
+
+    cycle = [begin]
+
+    while True:
+        for vertex in cycle:
+            if len(availableVertices[vertex]) > 0:
+                begin = vertex
+                current = vertex
+                break
+
+        subcycle = [current]
+
+        while True:
+            next = availableVertices[current].pop()
+            availableVertices[next].remove(current)
+            subcycle.append(next)
+            current = next
+            if current == begin:
+                break
+
+        index = cycle.index(begin)
+        cycle[index:index + 1] = subcycle
+
+        proceed = False
+        for key, value in availableVertices.items():
+            if len(value) > 0:
+                proceed = True
+                break
+
+        if not proceed:
+            break
+
+    return (True, cycle)
 
 
 def bellman_held_karp(graph: Graph) -> list:

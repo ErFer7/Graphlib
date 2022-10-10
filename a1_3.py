@@ -6,12 +6,16 @@ Exercício 3 [Ciclo Euleriano] da atividade 1.
 
 from os.path import join
 from source.graph import Graph
+from source.algorithms import hierholzer
 
-def algoritmoDeHierholzer(grafo:Graph):
-    pass
 
-def buscaCiclo(G,v,C):
-    pass
+# file = input("Grafo a ser usado: ")
+graph = Graph(join("graphs", "ContemCicloEuleriano.net"))
 
-        
-graph = Graph(join("graphs", "test_graph.net"))
+test = hierholzer(graph)
+valid = test[0]
+cycle = test[1]
+if valid:
+    print("1\n" + ",".join(map(lambda x: str(x + 1), cycle)))
+else:
+    print(0)
