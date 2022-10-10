@@ -75,14 +75,15 @@ def hierholzer(graph: Graph) -> tuple[bool, list]:
     '''
     Algoritmo de Hierholzer para a busca de ciclos Eulerianos.
     '''
-    availableVertices = {i: graph.neighbors(i) for i in range(graph.vertex_count())}
 
-    for value in availableVertices.values():
+    available_vertices = {i: graph.neighbors(i) for i in range(graph.vertex_count())}
+
+    for value in available_vertices.values():
         if len(value) % 2 != 0:
             return (False, [])
 
     begin = -1
-    for key, value in availableVertices.items():
+    for key, value in available_vertices.items():
         if len(value) > 0:
             begin = key
             break
@@ -93,7 +94,7 @@ def hierholzer(graph: Graph) -> tuple[bool, list]:
 
     while True:
         for vertex in cycle:
-            if len(availableVertices[vertex]) > 0:
+            if len(available_vertices[vertex]) > 0:
                 begin = vertex
                 current = vertex
                 break
@@ -101,10 +102,10 @@ def hierholzer(graph: Graph) -> tuple[bool, list]:
         subcycle = [current]
 
         while True:
-            next = availableVertices[current].pop()
-            availableVertices[next].remove(current)
-            subcycle.append(next)
-            current = next
+            next_ = available_vertices[current].pop()
+            available_vertices[next_].remove(current)
+            subcycle.append(next_)
+            current = next_
             if current == begin:
                 break
 
@@ -112,7 +113,7 @@ def hierholzer(graph: Graph) -> tuple[bool, list]:
         cycle[index:index + 1] = subcycle
 
         proceed = False
-        for key, value in availableVertices.items():
+        for key, value in available_vertices.items():
             if len(value) > 0:
                 proceed = True
                 break

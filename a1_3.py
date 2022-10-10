@@ -9,12 +9,11 @@ from source.graph import Graph
 from source.algorithms import hierholzer
 
 
-# file = input("Grafo a ser usado: ")
-graph = Graph(join("graphs", "ContemCicloEuleriano.net"))
+file = input("Grafo a ser usado: ")
+graph = Graph(join("graphs", file))
 
-test = hierholzer(graph)
-valid = test[0]
-cycle = test[1]
+valid, cycle = hierholzer(graph)
+
 if valid:
     print("1\n" + ",".join(map(lambda x: str(x + 1), cycle)))
 else:

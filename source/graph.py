@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 '''
-Graphlib v0.1
+Graphlib
 
 Módulo para o processamento de grafos.
 '''
