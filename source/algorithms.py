@@ -82,14 +82,18 @@ def bellman_held_karp(graph: Graph) -> list:
     Algoritmo de Bellman-Held-Karp.
     '''
 
+    raise NotImplementedError
+
 
 def bellman_ford(graph: Graph, s_index: int) -> tuple[bool, dict, dict]:
     '''
     Algoritmo de Bellman-Ford.
     '''
 
+    raise NotImplementedError
 
-def dijkstra(graph: Graph, s_index: int) -> tuple[list, dict]:
+
+def dijkstra(graph: Graph, s_index: int) -> tuple[list, list]:
     '''
     Algoritmo de Dijkstra.
     '''
@@ -124,9 +128,13 @@ def dijkstra(graph: Graph, s_index: int) -> tuple[list, dict]:
     return (distances, ancestors)
 
 
-def floyd_warshall(graph:Graph):
+def floyd_warshall(graph: Graph):
+    '''
+    Algoritmo de Floyd-Warshall.
+    '''
+
     D = []
-    D.append(matrix_W(graph))
+    D.append(matrix_w(graph))
     size = graph.vertex_count()
     for k in range(1,size+1):
         D.append(matrix_empty(size))
@@ -136,7 +144,7 @@ def floyd_warshall(graph:Graph):
     return D[-1]
 
 
-def matrix_W(graph:Graph):
+def matrix_w(graph:Graph):
     D = graph.get_edges()
     for i in range(graph.vertex_count()):
         D[i][i] = 0
@@ -144,4 +152,3 @@ def matrix_W(graph:Graph):
 
 def matrix_empty(size:int):
     return [[None for i in range(size)] for i in range(size)]
-    

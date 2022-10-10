@@ -13,4 +13,4 @@ file = input("Grafo a ser usado: ")
 graph = Graph(join("graphs", file))
 D = floyd_warshall(graph)
 for i in range(1,len(D)+1):
-    print("%d:" % (i) +",".join(map(str,D[i-1])))
+    print(f"{i}:" + ",".join(map(str,map(int,D[i-1]))))

@@ -11,6 +11,7 @@ from source.algorithms import breadth_first_search
 file = input("Grafo a ser usado: ")
 s = int(input("Índice do vértice (a partir de 1): "))
 graph = Graph(join("graphs", file))
+
 distances, ancestors = breadth_first_search(graph, s)
 
 tree = {}
