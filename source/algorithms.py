@@ -4,6 +4,7 @@
 Algoritmos.
 '''
 
+from math import inf
 from source.graph import Graph
 
 
@@ -24,14 +25,14 @@ def breadth_first_search(graph: Graph, s_index: int) -> tuple[dict, dict]:
 
     while len(queue) != 0:
 
-        u_vertex = queue.pop(0)
+        u_index = queue.pop(0)
 
-        for v_index in graph.neighbors(u_vertex):
+        for v_index in graph.neighbors(u_index):
 
             if not visited[v_index - 1]:
                 visited[v_index - 1] = True
-                distances[v_index] = distances[u_vertex] + 1
-                ancestors[v_index] = u_vertex
+                distances[v_index] = distances[u_index] + 1
+                ancestors[v_index] = u_index
                 queue.append(v_index)
 
     return (distances, ancestors)
@@ -88,10 +89,39 @@ def bellman_ford(graph: Graph, s_index: int) -> tuple[bool, dict, dict]:
     '''
 
 
-def dijkstra(graph: Graph, s_index: int) -> tuple[dict, dict]:
+def dijkstra(graph: Graph, s_index: int) -> tuple[list, dict]:
     '''
     Algoritmo de Dijkstra.
     '''
+
+    visited = [False] * graph.edge_count()
+    distances = [inf] * graph.edge_count()
+    ancestors = [None] * graph.edge_count()
+
+    distances[s_index - 1] = 0.0
+
+    while not all(visited):
+
+        u_index = None
+
+        min_distance = inf
+        for i, distance in enumerate(distances):
+            if distance < min_distance and not visited[i]:
+                min_distance = distance
+                u_index = i
+
+        visited[u_index] = True
+
+        for v_index in graph.neighbors(u_index + 1):
+
+            v_index -= 1
+
+            if not visited[v_index]:
+                if distances[v_index] > distances[u_index] + graph.weight(u_index + 1, v_index + 1):
+                    distances[v_index] = distances[u_index] + graph.weight(u_index + 1, v_index + 1)
+                    ancestors[v_index] = u_index + 1
+
+    return (distances, ancestors)
 
 
 def floyd_warshall(graph: Graph) -> tuple:
