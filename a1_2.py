@@ -24,5 +24,4 @@ for k, distance in distances.items():
         tree[distance].append(k)
 
 for k, i in tree.items():
-
     print(f"{k}: " + ", ".join(map(str, i)))

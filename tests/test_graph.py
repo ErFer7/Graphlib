@@ -17,7 +17,7 @@ def test_create_graph():
     passed = False
 
     try:
-        Graph(join("graphs", "test_graph.net"))
+        Graph(join("graphs", "test.net"))
         passed = True
     except Exception:
         pass
@@ -29,7 +29,7 @@ def test_vertex_count():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
     assert graph.vertex_count() == 4
 
 
@@ -38,7 +38,7 @@ def test_edge_count():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
     assert graph.edge_count() == 4
 
 
@@ -47,7 +47,7 @@ def test_degree():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
 
     assert graph.degree(1) == 2
     assert graph.degree(2) == 2
@@ -60,7 +60,7 @@ def test_label():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
 
     assert graph.label(1) == 'a'
     assert graph.label(2) == 'b'
@@ -73,7 +73,7 @@ def test_neighbors():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
 
     neighbors_1 = graph.neighbors(1)
     neighbors_2 = graph.neighbors(2)
@@ -91,7 +91,7 @@ def test_has_edge():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
 
     assert not graph.has_edge(1, 1)
     assert graph.has_edge(1, 2)
@@ -119,7 +119,7 @@ def test_weight():
     ...
     '''
 
-    graph = Graph(join("graphs", "test_graph.net"))
+    graph = Graph(join("graphs", "test.net"))
 
     assert graph.weight(1, 1) == inf
     assert graph.weight(1, 2) == 1.0

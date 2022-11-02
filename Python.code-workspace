@@ -1,0 +1,60 @@
+{
+	"folders": [
+		{
+			"path": "DiscordBot"
+		},
+		{
+			"path": "Frantic-Flyers"
+		},
+		{
+			"path": "Labyrinthics"
+		},
+		{
+			"path": "Geral"
+		},
+		{
+			"path": "Workshop-Formula-UFSC"
+		},
+		{
+			"path": "Samii"
+		},
+		{
+			"path": "VSEngine"
+		},
+		{
+			"path": "Mini-Dungeon"
+		},
+		{
+			"path": "Beecrowd-Python"
+		},
+		{
+			"path": "Stat-Analysis"
+		},
+		{
+			"path": "Tkinter-Practice"
+		},
+		{
+			"path": "Poker"
+		},
+		{
+			"path": "Cligim"
+		},
+		{
+			"path": "SGI"
+		},
+		{
+			"path": "Graphlib"
+		}
+	],
+	"settings": {
+		"python.linting.pylintArgs": [
+			"--max-line-length=120"
+		],
+		"python.formatting.autopep8Args": [
+			"--max-line-length",
+			"119",
+			"--experimental"
+		],
+		"powershell.cwd": "d:\\Code\\Python\\Mini-Dungeon"
+	}
+}

@@ -4,18 +4,21 @@
 Algoritmos.
 '''
 
+from collections import defaultdict
 from math import inf
 from source.graph import Graph
 
 
-def breadth_first_search(graph: Graph, s_index: int) -> tuple[dict, dict]:
+def breadth_first_search(graph: Graph, s_index: int) -> tuple[defaultdict, defaultdict]:
     '''
     Procura em largura.
     '''
 
     visited = [False] * graph.edge_count()
-    distances = {}
-    ancestors = {s_index: None}
+    distances = defaultdict()
+    ancestors = defaultdict()
+    distances.setdefault(inf)
+    ancestors.setdefault(None)
 
     visited[s_index - 1] = True
     distances[s_index] = 0
