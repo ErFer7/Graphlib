@@ -24,8 +24,9 @@ class Vertex():
 
     def __repr__(self) -> str:
         '''
-        Retorna o rótulo quando chamado diretamente por outra func
+        Retorna o rótulo quando chamado diretamente por outra função.
         '''
+
         return self._label
 
     def get_degree(self) -> int:
