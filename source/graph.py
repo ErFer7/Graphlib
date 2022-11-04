@@ -19,11 +19,13 @@ class Graph():
     # Atributos privados
     _vertices: list[Vertex]
     _edges: list[list]
+    _directed: bool
 
     def __init__(self, file_name: str = None) -> None:
 
         self._vertices = []
         self._edges = []
+        self._directed = False
 
         if file_name is None:
             return
@@ -39,10 +41,11 @@ class Graph():
 
             if adding_vertices:
 
-                if not line.startswith("*edges"):
+                if not (line.startswith("*edges") or line.startswith("*arcs")):
                     self.add_vertex(Vertex(line.split()[1]))
                 else:
                     adding_vertices = False
+                    self._directed = line.startswith("*arcs")
 
                     for i in range(self.vertex_count()):
                         self._edges.append([])
@@ -54,12 +57,27 @@ class Graph():
                 u_index = int(line.split()[1])
                 weight = float(line.split()[2])
 
-                self._edges[v_index - 1][u_index - 1] = weight
-                self._edges[u_index - 1][v_index - 1] = weight
-                self.connect_vertices(v_index, u_index)
+                self.connect_vertices(v_index, u_index, weight)
 
     def __repr__(self) -> str:
-        return "Representação não implementada"
+
+        ret_str = ''
+
+        for vertex in self._vertices:
+            ret_str += "        " + str(vertex)
+
+        ret_str += '\n'
+
+        for i, line in enumerate(self._edges):
+
+            ret_str += str(self._vertices[i]) + ' '
+
+            for edge in line:
+                ret_str += f"{edge: 8.2f} "
+
+            ret_str += '\n'
+
+        return ret_str
 
     # Métodos utilitários
     def add_vertex(self, vertex: Vertex) -> None:
@@ -76,13 +94,17 @@ class Graph():
 
         return self._vertices[v_index - 1]
 
-    def connect_vertices(self, v_index: int, u_index: int) -> None:
+    def connect_vertices(self, v_index: int, u_index: int, weight: float) -> None:
         '''
         Adiciona um vértice.
         '''
 
+        self._edges[v_index - 1][u_index - 1] = weight
         self._vertices[v_index - 1].connect(u_index)
-        self._vertices[u_index - 1].connect(v_index)
+
+        if not self._directed:
+            self._edges[u_index - 1][v_index - 1] = weight
+            self._vertices[u_index - 1].connect(v_index)
 
     def get_edges(self) -> list:
         '''
@@ -108,6 +130,7 @@ class Graph():
     def degree(self, v_index: int) -> int:
         '''
         Retorna o grau do vértice v.
+        (Ainda não suporta grafos dirigidos).
         '''
 
         return self._vertices[v_index - 1].get_degree()
@@ -122,6 +145,7 @@ class Graph():
     def neighbors(self, v_index: int) -> list:
         '''
         Retorna os vizinhos do vértice v.
+        (Ainda não suporta grafos dirigidos).
         '''
 
         return self._vertices[v_index - 1].neighbors()
@@ -131,11 +155,16 @@ class Graph():
         Se {u, v} ∈ E, retorna verdadeiro; se não existir, retorna falso.
         '''
 
-        return self._edges[v_index - 1][u_index - 1] != inf
+        return self._edges[v_index - 1][u_index - 1] != inf or self._edges[u_index - 1][v_index - 1] != inf
 
     def weight(self, v_index: int, u_index: int) -> float:
         '''
         Se {u, v} ∈ E, retorna o peso da aresta {u, v}; se não existir, retorna um valor infinito positivo.
         '''
 
-        return self._edges[v_index - 1][u_index - 1]
+        ret_val = self._edges[v_index - 1][u_index - 1]
+
+        if ret_val == inf:
+            return self._edges[u_index - 1][v_index - 1]
+
+        return ret_val

@@ -186,19 +186,27 @@ def floyd_warshall(graph: Graph):
     D = []
     D.append(matrix_w(graph))
     size = graph.vertex_count()
-    for k in range(1,size+1):
+    for k in range(1, size + 1):
         D.append(matrix_empty(size))
         for u in range(size):
             for v in range(size):
-                D[k][u][v] = min(D[k-1][u][v],D[k-1][u][k-1]+D[k-1][k-1][v])
+                D[k][u][v] = min(D[k - 1][u][v], D[k - 1][u][k - 1] + D[k - 1][k - 1][v])
     return D[-1]
 
 
 def matrix_w(graph:Graph):
+    '''
+    Função auxiliar.
+    '''
+
     D = graph.get_edges()
     for i in range(graph.vertex_count()):
         D[i][i] = 0
     return D
 
 def matrix_empty(size:int):
+    '''
+    Função auxiliar.
+    '''
+
     return [[None for i in range(size)] for i in range(size)]
