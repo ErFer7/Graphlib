@@ -221,16 +221,26 @@ def matrix_empty(size: int):
 
     return [[None for i in range(size)] for i in range(size)]
 
+def kosaraju(graph: Graph):
+    '''
+    Algoritmo para a obtenção de componentes fortemente conexas.
+    '''
+
+    raise NotImplementedError
+
 def strongly_connected_components(graph: Graph):
     '''
     Algoritmo para a obtenção de componentes fortemente conexas.
     '''
 
-    # visited, time, ancestors, f_time = scc_dfs(graph)
-    # transposed_graph = Graph()
-
     raise NotImplementedError
 
+    # visited, time, ancestors, f_time = scc_dfs(graph)
+    # transposed_graph = graph.transposed()
+
+    # visited_t, time_t, ancestors_t, f_time_t = scc_dfs(transposed_graph)
+
+    # return ancestors_t
 
 def scc_dfs(graph: Graph) -> tuple[list, list, list, list]:
     '''
@@ -239,7 +249,7 @@ def scc_dfs(graph: Graph) -> tuple[list, list, list, list]:
 
     visited = [False] * graph.vertex_count()
     time = [inf] * graph.vertex_count()
-    f_time = [inf] * graph.vertex_count()
+    final_time = [inf] * graph.vertex_count()
     ancestors = [None] * graph.vertex_count()
 
     total_time = 0
@@ -247,9 +257,9 @@ def scc_dfs(graph: Graph) -> tuple[list, list, list, list]:
     for v_index in range(graph.vertex_count()):
 
         if not visited[v_index]:
-            scc_dfs_visit(graph, v_index, visited, time, ancestors, f_time, total_time)
+            scc_dfs_visit(graph, v_index, visited, time, ancestors, final_time, total_time)
 
-    return (visited, time, ancestors, f_time)
+    return (visited, time, ancestors, final_time)
 
 
 def scc_dfs_visit(graph: Graph,
@@ -257,7 +267,7 @@ def scc_dfs_visit(graph: Graph,
                   visited: list,
                   time: list,
                   ancestors: list,
-                  f_time: list,
+                  final_time: list,
                   total_time: int) -> None:
     '''
     Algoritmo recursivo de visita DFS.
@@ -274,7 +284,7 @@ def scc_dfs_visit(graph: Graph,
 
         if not visited[u_index]:
             ancestors[u_index] = v_index + 1
-            scc_dfs_visit(graph, u_index, visited, time, ancestors, f_time, total_time)
+            scc_dfs_visit(graph, u_index, visited, time, ancestors, final_time, total_time)
 
     total_time += 1
-    f_time = total_time
+    final_time = total_time

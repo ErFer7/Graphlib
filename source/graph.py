@@ -18,7 +18,7 @@ class Graph():
 
     # Atributos privados
     _vertices: list[Vertex]
-    _edges: list[list]
+    _edges: list[list[float]]
     _directed: bool
 
     def __init__(self, file_name: str = None) -> None:
@@ -57,7 +57,9 @@ class Graph():
                 u_index = int(line.split()[1])
                 weight = float(line.split()[2])
 
-                self.connect_vertices(v_index, u_index, weight)
+                self.add_edge(v_index, u_index, weight)
+
+        self.update_vertices()
 
     def __repr__(self) -> str:
 
@@ -80,6 +82,15 @@ class Graph():
         return ret_str
 
     # Métodos utilitários
+    def set_attributes(self, vertices: list[Vertex], edges: list[list[float]], directed: bool) -> None:
+        '''
+        Define os atributos. Este método é usado na cópia de grafos.
+        '''
+
+        self._vertices = vertices
+        self._edges = edges
+        self._directed = directed
+
     def add_vertex(self, vertex: Vertex) -> None:
         '''
         Adiciona um vértice.
@@ -94,21 +105,52 @@ class Graph():
 
         return self._vertices[v_index - 1]
 
-    def connect_vertices(self, v_index: int, u_index: int, weight: float) -> None:
+    def add_edge(self, v_index: int, u_index: int, weight: float) -> None:
         '''
-        Adiciona um vértice.
+        Conecta as arestas.
         '''
 
         self._edges[v_index - 1][u_index - 1] = weight
-        self._vertices[v_index - 1].connect(u_index)
 
         if not self._directed:
             self._edges[u_index - 1][v_index - 1] = weight
-            self._vertices[u_index - 1].connect(v_index)
 
-    def get_edges(self) -> list:
+    def set_edge_weight(self, v_index: int, u_index: int, weight: float) -> None:
         '''
-        Retorna lista de arestas
+        Define o peso de uma aresta.
+        '''
+
+        self._edges[v_index][u_index] = weight
+
+    def update_vertices(self) -> None:
+        '''
+        Atualiza as conexões dos vértices.
+        '''
+
+        for i, vertex in enumerate(self._vertices):
+            vertex.set_connection(self._edges, i, self._directed)
+
+    def transposed(self):
+        '''
+        Retorna o grafo transposto.
+        '''
+
+        graph = Graph()
+        inf_matrix = [[inf for _ in range(self.vertex_count())] for _ in range(self.vertex_count())]
+
+        graph.set_attributes(self._vertices.copy(),inf_matrix, self._directed)
+
+        for i, row in enumerate(graph.get_edges()):
+            for j, _ in enumerate(row):
+                graph.set_edge_weight(i, j, self._edges[j][i])
+
+        graph.update_vertices()
+
+        return graph
+
+    def get_edges(self) -> list[list[float]]:
+        '''
+        Retorna uma matriz de arestas
         '''
         return self._edges
 
@@ -130,10 +172,23 @@ class Graph():
     def degree(self, v_index: int) -> int:
         '''
         Retorna o grau do vértice v.
-        (Ainda não suporta grafos dirigidos).
         '''
 
         return self._vertices[v_index - 1].degree
+
+    def in_degree(self, v_index: int) -> int:
+        '''
+        Retorna o grau +.
+        '''
+
+        return self._vertices[v_index - 1].in_degree
+
+    def out_degree(self, v_index: int) -> int:
+        '''
+        Retorna o grau -.
+        '''
+
+        return self._vertices[v_index - 1].out_degree
 
     def label(self, v_index: int) -> str:
         '''
@@ -145,10 +200,23 @@ class Graph():
     def neighbors(self, v_index: int) -> list:
         '''
         Retorna os vizinhos do vértice v.
-        (Ainda não suporta grafos dirigidos).
         '''
 
         return self._vertices[v_index - 1].neighbors
+
+    def in_neighbors(self, v_index: int) -> list:
+        '''
+        Retorna os vizinhos do vértice v +.
+        '''
+
+        return self._vertices[v_index - 1].in_neighbors
+
+    def out_neighbors(self, v_index: int) -> list:
+        '''
+        Retorna os vizinhos do vértice v -.
+        '''
+
+        return self._vertices[v_index - 1].out_neighbors
 
     def has_edge(self, v_index: int, u_index: int) -> bool:
         '''
