@@ -16,12 +16,14 @@ distances, ancestors = breadth_first_search(graph, s)
 
 tree = {}
 
-for k, distance in distances.items():
+for i, distance in enumerate(distances):
 
     if distance not in tree:
-        tree[distance] = [k]
+        tree[distance] = [i + 1]
     else:
-        tree[distance].append(k)
+        tree[distance].append(i + 1)
 
-for k, i in tree.items():
+sorted_tree = sorted(tree.items(), key=lambda x: x[0])
+
+for k, i in sorted_tree:
     print(f"{k}: " + ", ".join(map(str, i)))

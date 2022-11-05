@@ -133,7 +133,7 @@ class Graph():
         (Ainda não suporta grafos dirigidos).
         '''
 
-        return self._vertices[v_index - 1].get_degree()
+        return self._vertices[v_index - 1].degree
 
     def label(self, v_index: int) -> str:
         '''
@@ -148,7 +148,7 @@ class Graph():
         (Ainda não suporta grafos dirigidos).
         '''
 
-        return self._vertices[v_index - 1].neighbors()
+        return self._vertices[v_index - 1].neighbors
 
     def has_edge(self, v_index: int, u_index: int) -> bool:
         '''

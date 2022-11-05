@@ -4,6 +4,7 @@
 Módulo para vértices.
 '''
 
+# TODO: Implementar o in e out das operações
 
 class Vertex():
 
@@ -14,13 +15,21 @@ class Vertex():
     # Atributos privados
     _label: str
     _degree: int
+    _in_degree: int
+    _out_degree: int
     _neighbors: list
+    _in_neighbors: list
+    _out_neighbors: list
 
     def __init__(self, label: str) -> None:
 
         self._label = label
         self._degree = 0
+        self._in_degree = 0
+        self._out_degree = 0
         self._neighbors = []
+        self._in_neighbors = []
+        self._out_neighbors = []
 
     def __repr__(self) -> str:
         '''
@@ -29,12 +38,21 @@ class Vertex():
 
         return self._label
 
-    def get_degree(self) -> int:
+    @property
+    def degree(self) -> int:
         '''
         Retorna o grau atual.
         '''
 
         return self._degree
+
+    @property
+    def neighbors(self) -> list:
+        '''
+        Retorna uma lista com os vértices da vizinhança.
+        '''
+
+        return self._neighbors
 
     def connect(self, v_index) -> None:
         '''
@@ -43,10 +61,3 @@ class Vertex():
 
         self._neighbors.append(v_index)
         self._degree += 1
-
-    def neighbors(self) -> list:
-        '''
-        Retorna uma lista com os vértices da vizinhança.
-        '''
-
-        return self._neighbors
