@@ -207,12 +207,13 @@ def matrix_w(graph: Graph):
     Função auxiliar.
     '''
 
-    D = graph.get_edges()
+    D = graph.edges
 
     for i in range(graph.vertex_count()):
         D[i][i] = 0
 
     return D
+
 
 def matrix_empty(size: int):
     '''
@@ -221,70 +222,58 @@ def matrix_empty(size: int):
 
     return [[None for i in range(size)] for i in range(size)]
 
+
 def kosaraju(graph: Graph):
     '''
     Algoritmo para a obtenção de componentes fortemente conexas.
     '''
 
-    raise NotImplementedError
-
-def strongly_connected_components(graph: Graph):
-    '''
-    Algoritmo para a obtenção de componentes fortemente conexas.
-    '''
-
-    raise NotImplementedError
-
-    # visited, time, ancestors, f_time = scc_dfs(graph)
-    # transposed_graph = graph.transposed()
-
-    # visited_t, time_t, ancestors_t, f_time_t = scc_dfs(transposed_graph)
-
-    # return ancestors_t
-
-def scc_dfs(graph: Graph) -> tuple[list, list, list, list]:
-    '''
-    Algoritmo DFS modificado.
-    '''
-
+    stack = []
     visited = [False] * graph.vertex_count()
-    time = [inf] * graph.vertex_count()
-    final_time = [inf] * graph.vertex_count()
-    ancestors = [None] * graph.vertex_count()
+    transposed_visited = [False] * graph.vertex_count()
 
-    total_time = 0
+    sccs = []
 
-    for v_index in range(graph.vertex_count()):
+    transposed_graph = graph.transposed()
 
-        if not visited[v_index]:
-            scc_dfs_visit(graph, v_index, visited, time, ancestors, final_time, total_time)
+    for v_index in range(1, graph.vertex_count() + 1):
+        kosaraju_dfs_stack(graph, v_index, visited, stack)
 
-    return (visited, time, ancestors, final_time)
+    for v_index in stack:
+
+        scc = []
+        kosaraju_dfs_scc(transposed_graph, v_index, transposed_visited, scc)
+
+        if len(scc) > 0:
+            sccs.append(scc)
+
+    return sccs
 
 
-def scc_dfs_visit(graph: Graph,
-                  v_index: int,
-                  visited: list,
-                  time: list,
-                  ancestors: list,
-                  final_time: list,
-                  total_time: int) -> None:
+def kosaraju_dfs_stack(graph: Graph, v_index: int, visited: list, stack: list):
     '''
-    Algoritmo recursivo de visita DFS.
-    Índice incial: 0.
+    DFS para o algoritmo de Kosaraju, este algoritmo constrói o stack de visitas.
     '''
 
-    visited[v_index] = True
-    total_time += 1
-    time[v_index] = total_time
+    if not visited[v_index - 1]:
 
-    for u_index in graph.neighbors(v_index + 1):
+        visited[v_index - 1] = True
 
-        u_index -= 1
+        for u_index in graph.out_neighbors(v_index):
+            kosaraju_dfs_stack(graph, u_index, visited, stack)
 
-        if not visited[u_index]:
-            ancestors[u_index] = v_index + 1
-            scc_dfs_visit(graph, u_index, visited, time, ancestors, final_time, total_time)
+        stack.append(v_index)
 
-    total_time += 1
-    final_time = total_time
+
+def kosaraju_dfs_scc(graph: Graph, v_index: int, visited: list, scc: list):
+    '''
+    DFS para o algoritmo de Kosaraju, este algoritmo constrói uma lista com uma scc (strongly connected component).
+    '''
+
+    if not visited[v_index - 1]:
+
+        visited[v_index - 1] = True
+        scc.append(v_index)
+
+        for u_index in graph.out_neighbors(v_index):
+            kosaraju_dfs_scc(graph, u_index, visited, scc)

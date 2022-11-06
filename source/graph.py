@@ -81,6 +81,15 @@ class Graph():
 
         return ret_str
 
+    # Getters e Setters
+    @property
+    def edges(self) -> list[list[float]]:
+        '''
+        Retorna uma matriz de arestas.
+        '''
+
+        return self._edges
+
     # Métodos utilitários
     def set_attributes(self, vertices: list[Vertex], edges: list[list[float]], directed: bool) -> None:
         '''
@@ -140,19 +149,13 @@ class Graph():
 
         graph.set_attributes(self._vertices.copy(),inf_matrix, self._directed)
 
-        for i, row in enumerate(graph.get_edges()):
+        for i, row in enumerate(graph.edges):
             for j, _ in enumerate(row):
                 graph.set_edge_weight(i, j, self._edges[j][i])
 
         graph.update_vertices()
 
         return graph
-
-    def get_edges(self) -> list[list[float]]:
-        '''
-        Retorna uma matriz de arestas
-        '''
-        return self._edges
 
     # Métodos obrigatórios
     def vertex_count(self) -> int:
