@@ -8,6 +8,7 @@ Módulo para o processamento de grafos.
 
 from math import inf
 from source.vertex import Vertex
+from typing import List
 
 
 class Graph():
@@ -239,3 +240,9 @@ class Graph():
             return self._edges[u_index - 1][v_index - 1]
 
         return ret_val
+
+    def getVertices(self) -> List[Vertex]:
+        '''
+        Retorna todos os vértices.
+        '''
+        return self._vertices
