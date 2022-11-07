@@ -287,11 +287,18 @@ def topological_sort(graph: Graph) -> list:
     sorted_vertices = []
     visited = [False] * graph.vertex_count()
 
-    for v_index in range(1, graph.vertex_count() + 1):
-        if not visited[v_index - 1]:
-            topological_sort_dfs(graph, v_index, visited, sorted_vertices)
+    while not all(visited):
 
-    return reversed(sorted_vertices)
+        r_index = -1
+
+        while True:
+            r_index = randint(1, graph.vertex_count())
+            if not visited[r_index - 1]:
+                break
+
+        topological_sort_dfs(graph, r_index, visited, sorted_vertices)
+
+    return sorted_vertices
 
 
 def topological_sort_dfs(graph: Graph, v_index: int, visited: list, sorted_vertices: list) -> None:
@@ -305,7 +312,7 @@ def topological_sort_dfs(graph: Graph, v_index: int, visited: list, sorted_verti
         if not visited[u_index - 1]:
             topological_sort_dfs(graph, u_index, visited, sorted_vertices)
 
-    sorted_vertices.append(v_index)
+    sorted_vertices.insert(0, v_index)
 
 
 def kruskal(graph: Graph):
