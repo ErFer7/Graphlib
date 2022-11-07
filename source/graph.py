@@ -8,6 +8,7 @@ Módulo para o processamento de grafos.
 
 from math import inf
 from source.vertex import Vertex
+from copy import deepcopy
 
 
 class Graph():
@@ -57,7 +58,7 @@ class Graph():
                 u_index = int(line.split()[1])
                 weight = float(line.split()[2])
 
-                self.add_edge(v_index, u_index, weight)
+                self.set_edge(v_index, u_index, weight)
 
         self.update_vertices()
 
@@ -114,7 +115,7 @@ class Graph():
 
         return self._vertices[v_index - 1]
 
-    def add_edge(self, v_index: int, u_index: int, weight: float) -> None:
+    def set_edge(self, v_index: int, u_index: int, weight: float) -> None:
         '''
         Conecta as arestas.
         '''
@@ -123,6 +124,14 @@ class Graph():
 
         if not self._directed:
             self._edges[u_index - 1][v_index - 1] = weight
+
+    def add_edge(self, v_index: int, u_index: int, weight: float) -> None:
+        '''
+        Adiciona uma aresta nova.
+        '''
+
+        self.set_edge(v_index, u_index, weight)
+        self.update_vertices()
 
     def set_edge_weight(self, v_index: int, u_index: int, weight: float) -> None:
         '''
@@ -154,6 +163,17 @@ class Graph():
                 graph.set_edge_weight(i, j, self._edges[j][i])
 
         graph.update_vertices()
+
+        return graph
+
+    def disconnected(self):
+        '''
+        Retorna o grafo sem nenhuma aresta.
+        '''
+
+        graph = Graph()
+        inf_matrix = [[inf for _ in range(self.vertex_count())] for _ in range(self.vertex_count())]
+        graph.set_attributes(deepcopy(self._vertices), inf_matrix, self._directed)
 
         return graph
 

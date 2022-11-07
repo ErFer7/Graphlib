@@ -5,6 +5,7 @@ Algoritmos.
 '''
 
 from math import inf
+from random import randint
 from source.graph import Graph
 
 
@@ -229,10 +230,9 @@ def kosaraju(graph: Graph):
     '''
 
     stack = []
+    sccs = []
     visited = [False] * graph.vertex_count()
     transposed_visited = [False] * graph.vertex_count()
-
-    sccs = []
 
     transposed_graph = graph.transposed()
 
@@ -277,3 +277,45 @@ def kosaraju_dfs_scc(graph: Graph, v_index: int, visited: list, scc: list):
 
         for u_index in graph.out_neighbors(v_index):
             kosaraju_dfs_scc(graph, u_index, visited, scc)
+
+
+def kruskal(graph: Graph) -> Graph:
+    '''
+    Algoritmo de Kruskal.
+    '''
+
+    raise NotImplementedError
+
+
+def prim(graph: Graph) -> Graph:
+    '''
+    Algoritmo de Prim levemente modificado.
+    '''
+
+    r_index = randint(1, graph.vertex_count())
+    spanning_tree = graph.disconnected()
+    visited = [False] * graph.vertex_count()
+
+    visited[r_index - 1] = True
+    edges = {}
+
+    for u_index in graph.neighbors(r_index):
+        edges[(r_index, u_index)] = graph.weight(r_index, u_index)
+
+    while not all(visited):
+
+        minimum_path = min(edges.values())
+        v_index, u_index = list(edges.keys())[list(edges.values()).index(minimum_path)]
+
+        if not visited[u_index - 1]:
+
+            visited[u_index - 1] = True
+            spanning_tree.add_edge(v_index, u_index, minimum_path)
+
+            for n_index in graph.neighbors(u_index):
+                if (n_index, u_index) not in edges:
+                    edges[(u_index, n_index)] = graph.weight(u_index, n_index)
+
+        del edges[(v_index, u_index)]
+
+    return spanning_tree
