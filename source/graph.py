@@ -55,9 +55,11 @@ class Graph():
                             self._edges[i].append(inf)
             else:
 
-                v_index = int(line.split()[0])
-                u_index = int(line.split()[1])
-                weight = float(line.split()[2])
+                line_items = line.split()
+
+                v_index = int(line_items[0])
+                u_index = int(line_items[1])
+                weight = float(line_items[2])
 
                 self.set_edge(v_index, u_index, weight)
 
@@ -285,14 +287,17 @@ class Graph():
             return self._edges[u_index - 1][v_index - 1]
 
         return ret_val
-    
+
     def valid_edges(self) -> list:
         '''
         retorna lista de (u,v,w) para toda aresta/arco com w != inf
         '''
+
         valid = []
+
         for u in range(self.vertex_count()):
             for v in range(self.vertex_count()):
                 if self._edges[u][v] != inf:
-                    valid.append((u+1,v+1,self._edges[u][v]))
+                    valid.append((u + 1, v + 1, self._edges[u][v]))
+
         return valid
