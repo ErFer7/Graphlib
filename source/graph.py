@@ -161,6 +161,9 @@ class Graph():
         Retorna a soma de todos os pesos.
         '''
 
+        if self._directed:
+            raise NotImplementedError("Este método não suporta grafos dirigidos")
+
         total_sum = 0.0
 
         for i, row in enumerate(self._edges):
