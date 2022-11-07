@@ -6,6 +6,7 @@ Graphlib
 Módulo para o processamento de grafos.
 '''
 
+import re
 from math import inf
 from copy import deepcopy
 from source.vertex import Vertex
@@ -43,7 +44,8 @@ class Graph():
             if adding_vertices:
 
                 if not (line.startswith("*edges") or line.startswith("*arcs")):
-                    self.add_vertex(Vertex(line.split()[1]))
+                    processed_line = ' '.join(line.split()[1:]).replace('\"', '')
+                    self.add_vertex(Vertex(processed_line))
                 else:
                     adding_vertices = False
                     self._directed = line.startswith("*arcs")

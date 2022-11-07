@@ -7,7 +7,6 @@ Algoritmos.
 from math import inf
 from random import randint
 from source.graph import Graph
-from collections import deque
 
 
 def breadth_first_search(graph: Graph, s_index: int) -> tuple[dict, dict]:
@@ -279,37 +278,35 @@ def kosaraju_dfs_scc(graph: Graph, v_index: int, visited: list, scc: list):
         for u_index in graph.out_neighbors(v_index):
             kosaraju_dfs_scc(graph, u_index, visited, scc)
 
-def topological_ordering(graph):
+
+def topological_sort(graph: Graph) -> list:
     '''
     Ordenação topológica.
     '''
 
-    visited = [False] * (graph.vertex_count()+1)
-    queue = deque([])
+    sorted_vertices = []
+    visited = [False] * graph.vertex_count()
 
-    for i, currentGraph in enumerate(graph.vertices):
-        if not visited[i]:
-            topological_ordering_sub(graph, i, visited, queue)
+    for v_index in range(1, graph.vertex_count() + 1):
+        if not visited[v_index - 1]:
+            topological_sort_dfs(graph, v_index, visited, sorted_vertices)
 
-    for index, b in enumerate(queue):
-        print(graph.label(b), end='')
-        if index < len(queue) - 1:
-            print(' -> ', end='')
-    print()
+    return reversed(sorted_vertices)
 
 
-def topological_ordering_sub(graph, v, visited, queue):
+def topological_sort_dfs(graph: Graph, v_index: int, visited: list, sorted_vertices: list) -> None:
     '''
     Função auxiliar.
     '''
 
-    visited[v] = True
+    visited[v_index - 1] = True
 
-    for i in graph.neighbors(v):
-        if not visited[i]:
-            topological_ordering_sub(graph, i, visited, queue)
+    for u_index in graph.out_neighbors(v_index):
+        if not visited[u_index - 1]:
+            topological_sort_dfs(graph, u_index, visited, sorted_vertices)
 
-    queue.appendleft(v)
+    sorted_vertices.append(v_index)
+
 
 def kruskal(graph: Graph) -> Graph:
     '''
