@@ -277,3 +277,21 @@ def kosaraju_dfs_scc(graph: Graph, v_index: int, visited: list, scc: list):
 
         for u_index in graph.out_neighbors(v_index):
             kosaraju_dfs_scc(graph, u_index, visited, scc)
+
+def kruskal(graph: Graph):
+    '''
+    Algoritmo de Kruskal para achar arvore geradora minima
+    '''
+    A = []
+    vmod = graph.vertex_count()
+    S = [[v] for v in range(vmod)]
+    E = graph.valid_edges()
+    E.sort(key=lambda e:e[2])
+    for edge in E:
+        if S[edge[0]-1] != S[edge[1]-1]:
+            if edge not in A:
+                A.append(edge)
+            x = list(set().union(S[edge[0]-1],S[edge[1]-1]))
+            for y in x:
+                S[y] = x
+    return A

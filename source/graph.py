@@ -239,3 +239,14 @@ class Graph():
             return self._edges[u_index - 1][v_index - 1]
 
         return ret_val
+    
+    def valid_edges(self) -> list:
+        '''
+        retorna lista de (u,v,w) para toda aresta/arco com w != inf
+        '''
+        valid = []
+        for u in range(self.vertex_count()):
+            for v in range(self.vertex_count()):
+                if self._edges[u][v] != inf:
+                    valid.append((u+1,v+1,self._edges[u][v]))
+        return valid
