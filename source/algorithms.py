@@ -7,6 +7,7 @@ Algoritmos.
 from math import inf
 from random import randint
 from source.graph import Graph
+from collections import deque
 
 
 def breadth_first_search(graph: Graph, s_index: int) -> tuple[dict, dict]:
@@ -278,6 +279,37 @@ def kosaraju_dfs_scc(graph: Graph, v_index: int, visited: list, scc: list):
         for u_index in graph.out_neighbors(v_index):
             kosaraju_dfs_scc(graph, u_index, visited, scc)
 
+def topological_ordering(graph):
+    '''
+    Ordenação topológica.
+    '''
+
+    visited = [False] * (graph.vertex_count()+1)
+    queue = deque([])
+
+    for i, currentGraph in enumerate(graph.vertices):
+        if not visited[i]:
+            topological_ordering_sub(graph, i, visited, queue)
+
+    for index, b in enumerate(queue):
+        print(graph.label(b), end='')
+        if index < len(queue) - 1:
+            print(' -> ', end='')
+    print()
+
+
+def topological_ordering_sub(graph, v, visited, queue):
+    '''
+    Função auxiliar.
+    '''
+
+    visited[v] = True
+
+    for i in graph.neighbors(v):
+        if not visited[i]:
+            topological_ordering_sub(graph, i, visited, queue)
+
+    queue.appendleft(v)
 
 def kruskal(graph: Graph) -> Graph:
     '''

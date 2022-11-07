@@ -7,8 +7,8 @@ Módulo para o processamento de grafos.
 '''
 
 from math import inf
-from source.vertex import Vertex
 from copy import deepcopy
+from source.vertex import Vertex
 
 
 class Graph():
@@ -84,6 +84,14 @@ class Graph():
 
     # Getters e Setters
     @property
+    def vertices(self) -> list[Vertex]:
+        '''
+        Retorna todos os vértices.
+        '''
+
+        return self._vertices
+
+    @property
     def edges(self) -> list[list[float]]:
         '''
         Retorna uma matriz de arestas.
@@ -147,6 +155,20 @@ class Graph():
 
         for i, vertex in enumerate(self._vertices):
             vertex.set_connection(self._edges, i, self._directed)
+
+    def weight_sum(self) -> float:
+        '''
+        Retorna a soma de todos os pesos.
+        '''
+
+        total_sum = 0.0
+
+        for i, row in enumerate(self._edges):
+            for weight in row[i:]:
+                if weight != inf:
+                    total_sum += weight
+
+        return total_sum
 
     def transposed(self):
         '''

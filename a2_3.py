@@ -14,4 +14,7 @@ graph = Graph(join("graphs", file))
 
 spanning_tree = prim(graph)
 
-print(spanning_tree)
+print(spanning_tree.weight_sum())
+
+for row in spanning_tree.edges:
+    pass
