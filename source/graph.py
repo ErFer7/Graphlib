@@ -6,7 +6,6 @@ Graphlib
 Módulo para o processamento de grafos.
 '''
 
-import re
 from math import inf
 from copy import deepcopy
 from source.vertex import Vertex
