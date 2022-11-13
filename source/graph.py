@@ -102,7 +102,7 @@ class Graph():
 
         return self._edges
 
-    # Métodos utilitários
+    # Métodos
     def set_attributes(self, vertices: list[Vertex], edges: list[list[float]], directed: bool) -> None:
         '''
         Define os atributos. Este método é usado na cópia de grafos.
@@ -205,7 +205,6 @@ class Graph():
 
         return graph
 
-    # Métodos obrigatórios
     def vertex_count(self) -> int:
         '''
         Retorna a quantidade de vértices.

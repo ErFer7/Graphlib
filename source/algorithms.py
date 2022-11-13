@@ -287,16 +287,9 @@ def topological_sort(graph: Graph) -> list:
     sorted_vertices = []
     visited = [False] * graph.vertex_count()
 
-    while not all(visited):
-
-        r_index = -1
-
-        while True:
-            r_index = randint(1, graph.vertex_count())
-            if not visited[r_index - 1]:
-                break
-
-        topological_sort_dfs(graph, r_index, visited, sorted_vertices)
+    for v_index in range(1, graph.vertex_count() + 1):
+        if not visited[v_index - 1]:
+            topological_sort_dfs(graph, v_index, visited, sorted_vertices)
 
     return sorted_vertices
 
