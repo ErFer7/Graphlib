@@ -359,3 +359,20 @@ def prim(graph: Graph) -> Graph:
         del edges[(v_index, u_index)]
 
     return spanning_tree
+
+
+def ford_fulkerson(graph: Graph) -> Graph:
+    '''
+    Algoritmo de Ford-Fulkerson
+    '''
+
+    raise NotImplementedError
+
+
+def edmonds_karp(graph: Graph) -> Graph:
+    '''
+    Algoritmo de Edmonds-Karp
+    '''
+
+    # TODO: Criar grafo residual
+    # TODO: Matriz de fluxos
