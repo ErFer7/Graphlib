@@ -316,7 +316,7 @@ class Graph():
 
         for i, row in enumerate(residual_graph.edges):
             for j, _ in enumerate(row):
-                residual_graph.set_edge_weight(i, j, 0.0)
+                residual_graph.set_edge_weight(i, j, self._edges[j][i])
 
         residual_graph.update_vertices()
 

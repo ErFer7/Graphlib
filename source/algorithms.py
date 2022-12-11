@@ -375,24 +375,89 @@ def edmonds_karp(graph: Graph, s_index: int, t_index: int) -> Graph:
     '''
 
     residual_graph = graph.residual()
-
     flow_matrix = [[0.0 for _ in range(graph.vertex_count())] for _ in range(graph.vertex_count())]
-    residual_flow_matrix = [[0.0 for _ in range(graph.vertex_count())] for _ in range(graph.vertex_count())]
 
-    visited = [False] * graph.vertex_count()
-    ancestors = []
+    path = edmonds_karp_bfs(residual_graph, flow_matrix, s_index, t_index)
+
+    while True:
+        path = edmonds_karp_bfs(residual_graph, flow_matrix, s_index, t_index)
+
+        if path is None:
+            break
+
+        flow = min(graph.weight(v_index, u_index) - flow_matrix[v_index - 1][u_index - 1] \
+                   for v_index, u_index in path)
+
+        for v_index, u_index in path:
+            flow_matrix[v_index - 1][u_index - 1] += flow
+            flow_matrix[u_index - 1][v_index - 1] -= flow
+
+    return sum(flow_matrix[s_index - 1][i] for i in range(graph.vertex_count()))
+
+
+def edmonds_karp_bfs(graph: Graph, flow_matrix: list[list[float]], s_index, t_index):
+
+    '''
+    BFS para Edmonds-Karp
+    '''
+
     queue = []
+    paths = {}
 
-    visited[s_index - 1] = True
     queue.append(s_index)
+    paths[s_index] = []
 
     while len(queue) > 0:
 
         u_index = queue.pop(0)
 
-        for v_index in graph.neighbors(u_index):
-            pass
-            # TODO: Terminar o algoritmo
-            # if not visited[v_index - 1] and cf((u, v))
+        for v_index in graph.in_neighbors(u_index):
 
-    return residual_graph
+            if v_index not in paths and graph.weight(u_index, v_index) - flow_matrix[u_index - 1][v_index - 1] > 0:
+                paths[v_index] = paths[u_index] + [(u_index, v_index)]
+
+                if v_index == t_index:
+                    return paths[v_index]
+                queue.append(v_index)
+
+    return None
+
+
+# def edmonds_karp_bfs(graph: Graph,
+#                      residual_graph: Graph,
+#                      flow_matrix: list[list[float]],
+#                      residual_flow_matrix: list[list[float]],
+#                      s_index: int,
+#                      t_index: int) -> list[int]:
+#     '''
+#     BFS para Edmonds-Karp
+#     '''
+
+#     visited = [False] * graph.vertex_count()
+#     ancestors = [None] * graph.vertex_count()
+#     queue = []
+
+#     visited[s_index - 1] = True
+#     queue.append(s_index)
+
+#     while len(queue) > 0:
+#         u_index = queue.pop(0)
+
+#         for v_index in graph.in_neighbors(u_index):
+#             if not visited[v_index - 1] and \
+#                residual_graph.weight(u_index, v_index) - residual_flow_matrix[u_index - 1][v_index - 1] > 0.0:
+
+#                 visited[v_index - 1] = True
+#                 ancestors[v_index - 1] = u_index
+
+#                 if v_index == t_index:
+#                     path = [t_index]
+#                     w_index = t_index
+
+#                     while w_index != s_index:
+#                         w_index = ancestors[w_index - 1]
+#                         path.append(w_index)
+
+#                     return list(reversed(path))
+
+#                 queue.append(v_index)

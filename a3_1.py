@@ -9,12 +9,11 @@ from source.graph import Graph
 from source.algorithms import edmonds_karp
 
 
-# file = input("Grafo a ser usado: ")
-file = "test_dir.net"
+file = input("Grafo a ser usado: ")
+s_index = int(input("Vértice fonte: "))
+t_index = int(input("Vértice destino: "))
 graph = Graph(join("graphs", file))
 
-print(graph)
+max_flow = edmonds_karp(graph, s_index, t_index)
 
-test = edmonds_karp(graph, 1, 4)
-
-print(test)
+print(f"O fluxo máximo é: {max_flow}")
