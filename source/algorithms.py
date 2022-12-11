@@ -461,3 +461,61 @@ def edmonds_karp_bfs(graph: Graph, flow_matrix: list[list[float]], s_index, t_in
 #                     return list(reversed(path))
 
 #                 queue.append(v_index)
+
+def hopcroftKarp(graph: Graph) -> Graph:
+    distances = [inf] * graph.vertex_count()
+    mate = []
+    mateSize = 0 # m
+
+    while hopcroftKarpBFS(graph, mate, distances):
+        for vector in graph.vertices:
+            if mate[vector] == None:
+                if hopcroftKarpDFS(graph, mate, vector, distances):
+                    mateSize += 1
+
+    return {"mate": mate, "m": mateSize}
+
+# Busca em largura
+def hopcroftKarpBFS(graph: Graph, mate, D):
+    queue = []
+
+    for vertex in graph.vertices:
+        if mate[vertex] == None:
+            D[vertex] = 0
+            queue.append(vertex)
+        else:
+            D[vertex] = "inf"
+
+    # TODO implement Dnull <- infinity
+    dNullsQuantity = 0
+    for i in D:
+        if i is None:
+            dNullsQuantity += 1
+    # test ^
+
+    while len(queue) > 0:
+        vertex = queue.pop()
+        if D[vertex] < dNullsQuantity: # TODO fix
+            for y in graph.neighbors(vertex):
+                if D[mate[y]] == "inf":
+                    D[mate[y]] = D[vertex] + 1
+                    queue.append(mate[y])
+
+    return D # TODO fix
+
+
+# Busca em profundidade
+def hopcroftKarpDFS(graph: Graph, mate, vertex, D):
+    
+    if vertex is not None:
+        for y in graph.neighbors(vertex):
+            if D[mate[y]] == D[vertex] + 1:
+                if hopcroftKarpDFS(graph, mate, vertex, D):
+                    mate[y] = vertex
+                    mate[vertex] = y
+                    return True
+
+        D[vertex] = "inf"
+        return False
+
+    return True
