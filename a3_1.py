@@ -9,6 +9,12 @@ from source.graph import Graph
 from source.algorithms import edmonds_karp
 
 
-file = input("Grafo a ser usado: ")
+# file = input("Grafo a ser usado: ")
+file = "test_dir.net"
 graph = Graph(join("graphs", file))
 
+print(graph)
+
+test = edmonds_karp(graph, 1, 4)
+
+print(test)

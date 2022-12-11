@@ -184,7 +184,7 @@ class Graph():
         graph = Graph()
         inf_matrix = [[inf for _ in range(self.vertex_count())] for _ in range(self.vertex_count())]
 
-        graph.set_attributes(self._vertices.copy(),inf_matrix, self._directed)
+        graph.set_attributes(self._vertices.copy(), inf_matrix, self._directed)
 
         for i, row in enumerate(graph.edges):
             for j, _ in enumerate(row):
@@ -289,7 +289,7 @@ class Graph():
 
     def valid_edges(self) -> list:
         '''
-        retorna lista de (u,v,w) para toda aresta/arco com w != inf
+        retorna lista de (u,v,w) para toda aresta/arco com w != inf.
         '''
 
         valid = []
@@ -300,3 +300,24 @@ class Graph():
                     valid.append((u + 1, v + 1, self._edges[u][v]))
 
         return valid
+
+    def residual(self):
+        '''
+        Retorna o grafo residual.
+        '''
+
+        if not self._directed:
+            raise Exception("The graph must be directed.")
+
+        residual_graph = Graph()
+        residual_matrix = deepcopy(self._edges)
+
+        residual_graph.set_attributes(deepcopy(self._vertices), residual_matrix, True)
+
+        for i, row in enumerate(residual_graph.edges):
+            for j, _ in enumerate(row):
+                residual_graph.set_edge_weight(i, j, 0.0)
+
+        residual_graph.update_vertices()
+
+        return residual_graph

@@ -369,10 +369,30 @@ def ford_fulkerson(graph: Graph) -> Graph:
     raise NotImplementedError
 
 
-def edmonds_karp(graph: Graph) -> Graph:
+def edmonds_karp(graph: Graph, s_index: int, t_index: int) -> Graph:
     '''
     Algoritmo de Edmonds-Karp
     '''
 
-    # TODO: Criar grafo residual
-    # TODO: Matriz de fluxos
+    residual_graph = graph.residual()
+
+    flow_matrix = [[0.0 for _ in range(graph.vertex_count())] for _ in range(graph.vertex_count())]
+    residual_flow_matrix = [[0.0 for _ in range(graph.vertex_count())] for _ in range(graph.vertex_count())]
+
+    visited = [False] * graph.vertex_count()
+    ancestors = []
+    queue = []
+
+    visited[s_index - 1] = True
+    queue.append(s_index)
+
+    while len(queue) > 0:
+
+        u_index = queue.pop(0)
+
+        for v_index in graph.neighbors(u_index):
+            pass
+            # TODO: Terminar o algoritmo
+            # if not visited[v_index - 1] and cf((u, v))
+
+    return residual_graph
