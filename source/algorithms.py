@@ -493,3 +493,87 @@ def hopcroft_karp_dfs(graph: Graph, x_vertices: list, mate: list, x_index: int, 
         return False
 
     return True
+
+
+def backtracking_coloring(graph: Graph):
+    '''
+    Algoritmo de coloração mínima.
+    '''
+
+    palette = [0]
+    colored = [False] * graph.vertex_count()
+    colors = [None] * graph.vertex_count()
+    tried_colors = [[] for _ in range(graph.vertex_count())]
+    history = []
+
+    first_bfs_pass = True
+
+    while not all(colored):
+
+        queue = []
+        if first_bfs_pass:
+            queue.append(1)
+            first_bfs_pass = False
+        else:
+            queue.append(colored.index(False) + 1)
+
+        vertex_colored = color_vertex(graph, queue[0], palette, tried_colors, colors, history, colored)
+
+        while len(queue) > 0:
+            u_index = queue.pop(0)
+
+            for v_index in graph.neighbors(u_index):
+
+                if colored[v_index - 1]:
+                    continue
+
+                vertex_colored = color_vertex(graph, v_index, palette, tried_colors, colors, history, colored)
+
+                if vertex_colored:
+                    queue.append(v_index)
+                else:
+                    while True:
+                        queue.clear()
+                        last = history.pop()
+
+                        if len(history) == 0:
+                            palette.append(palette[-1] + 1)
+                            tried_colors[last - 1].clear()
+
+                        vertex_colored = color_vertex(graph, last, palette, tried_colors, colors, history, colored)
+
+                        if vertex_colored:
+                            queue.append(last)
+                            break
+
+                        tried_colors[last - 1].clear()
+                        colors[last - 1] = None
+                    break
+
+    return (len(palette), colors)
+
+def color_vertex(graph: Graph,
+                 v_index: int,
+                 palette: list,
+                 tried_colors: list[list],
+                 colors: list,
+                 history: list,
+                 colored: list) -> True:
+    '''
+    Função auxiliar de coloração.
+    '''
+
+    neighborhood_colors = []
+    for w_index in graph.neighbors(v_index):
+        neighborhood_colors.append(colors[w_index - 1])
+
+    colored[v_index - 1] = False
+    for color in palette:
+        if color not in neighborhood_colors and color not in tried_colors[v_index - 1]:
+            colored[v_index - 1] = True
+            colors[v_index - 1] = color
+            history.append(v_index)
+            tried_colors[v_index - 1].append(color)
+            break
+
+    return colored[v_index - 1]
