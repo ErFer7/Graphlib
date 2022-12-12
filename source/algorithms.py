@@ -395,7 +395,7 @@ def edmonds_karp(graph: Graph, s_index: int, t_index: int) -> Graph:
     return sum(flow_matrix[s_index - 1][i] for i in range(graph.vertex_count()))
 
 
-def edmonds_karp_bfs(graph: Graph, flow_matrix: list[list[float]], s_index, t_index):
+def edmonds_karp_bfs(graph: Graph, flow_matrix: list[list[float]], s_index, t_index) -> list:
 
     '''
     BFS para Edmonds-Karp
@@ -423,99 +423,73 @@ def edmonds_karp_bfs(graph: Graph, flow_matrix: list[list[float]], s_index, t_in
     return None
 
 
-# def edmonds_karp_bfs(graph: Graph,
-#                      residual_graph: Graph,
-#                      flow_matrix: list[list[float]],
-#                      residual_flow_matrix: list[list[float]],
-#                      s_index: int,
-#                      t_index: int) -> list[int]:
-#     '''
-#     BFS para Edmonds-Karp
-#     '''
+def hopcroft_karp(graph: Graph, x_vertices: list):
+    '''
+    Algoritmo de Hopcroft-Karp.
+    '''
 
-#     visited = [False] * graph.vertex_count()
-#     ancestors = [None] * graph.vertex_count()
-#     queue = []
-
-#     visited[s_index - 1] = True
-#     queue.append(s_index)
-
-#     while len(queue) > 0:
-#         u_index = queue.pop(0)
-
-#         for v_index in graph.in_neighbors(u_index):
-#             if not visited[v_index - 1] and \
-#                residual_graph.weight(u_index, v_index) - residual_flow_matrix[u_index - 1][v_index - 1] > 0.0:
-
-#                 visited[v_index - 1] = True
-#                 ancestors[v_index - 1] = u_index
-
-#                 if v_index == t_index:
-#                     path = [t_index]
-#                     w_index = t_index
-
-#                     while w_index != s_index:
-#                         w_index = ancestors[w_index - 1]
-#                         path.append(w_index)
-
-#                     return list(reversed(path))
-
-#                 queue.append(v_index)
-
-def hopcroftKarp(graph: Graph) -> Graph:
     distances = [inf] * graph.vertex_count()
-    mate = []
-    mateSize = 0 # m
+    mate = [None] * graph.vertex_count()
+    mate_size = 0
 
-    while hopcroftKarpBFS(graph, mate, distances):
-        for vector in graph.vertices:
-            if mate[vector] == None:
-                if hopcroftKarpDFS(graph, mate, vector, distances):
-                    mateSize += 1
+    while hopcroft_karp_bfs(graph, x_vertices, mate, distances):
+        for x_index in x_vertices:
+            if mate[x_index - 1] is None:
+                if hopcroft_karp_dfs(graph, x_vertices, mate, x_index, distances):
+                    mate_size += 1
 
-    return {"mate": mate, "m": mateSize}
+    return (mate_size, mate)
 
-# Busca em largura
-def hopcroftKarpBFS(graph: Graph, mate, D):
+
+def hopcroft_karp_bfs(graph: Graph, x_vertices: list, mate: list, distances: list):
+    '''
+    BFS para o Hopcroft-Karp.
+    '''
+
     queue = []
 
-    for vertex in graph.vertices:
-        if mate[vertex] == None:
-            D[vertex] = 0
-            queue.append(vertex)
+    for x_index in x_vertices:
+        if mate[x_index] is None:
+            distances[x_index - 1] = 0
+            queue.append(x_index)
         else:
-            D[vertex] = "inf"
+            distances[x_index - 1] = inf
 
-    # TODO implement Dnull <- infinity
-    dNullsQuantity = 0
-    for i in D:
-        if i is None:
-            dNullsQuantity += 1
-    # test ^
+    distances[0] = inf
 
     while len(queue) > 0:
-        vertex = queue.pop()
-        if D[vertex] < dNullsQuantity: # TODO fix
-            for y in graph.neighbors(vertex):
-                if D[mate[y]] == "inf":
-                    D[mate[y]] = D[vertex] + 1
-                    queue.append(mate[y])
+        x_index = queue.pop(0)
+        x_index = 0 if x_index is None else x_index
 
-    return D # TODO fix
+        if distances[x_index - 1] < distances[0]:
+            for y_index in graph.neighbors(x_index):
+
+                dist_index = 0 if mate[y_index - 1] is None else mate[y_index - 1]
+
+                if distances[dist_index] == inf:
+                    distances[dist_index] = distances[x_index - 1] + 1
+                    queue.append(mate[y_index - 1])
+
+    return distances[0] != inf
 
 
-# Busca em profundidade
-def hopcroftKarpDFS(graph: Graph, mate, vertex, D):
-    
-    if vertex is not None:
-        for y in graph.neighbors(vertex):
-            if D[mate[y]] == D[vertex] + 1:
-                if hopcroftKarpDFS(graph, mate, vertex, D):
-                    mate[y] = vertex
-                    mate[vertex] = y
+def hopcroft_karp_dfs(graph: Graph, x_vertices: list, mate: list, x_index: int, distances: list):
+    '''
+    DFS para o Hopcroft-Karp.
+    '''
+
+    if x_index is not None:
+        for y_index in graph.neighbors(x_index):
+
+            dist_index = 0 if mate[y_index - 1] is None else mate[y_index - 1]
+            if distances[dist_index] == distances[x_index - 1] + 1:
+                if hopcroft_karp_dfs(graph, x_vertices, mate, mate[y_index - 1], distances):
+                    mate[y_index - 1] = x_index
+                    mate[x_index - 1] = y_index
+
                     return True
 
-        D[vertex] = "inf"
+        distances[x_index - 1] = inf
         return False
 
     return True
