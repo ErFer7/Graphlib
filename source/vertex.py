@@ -41,6 +41,9 @@ class Vertex():
 
         return self._label
 
+    def get_label(self) -> str:
+        return self._label
+
     @property
     def degree(self) -> int:
         '''

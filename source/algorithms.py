@@ -441,8 +441,14 @@ def hopcroft_karp(graph: Graph, x_vertices: list):
                 if hopcroft_karp_dfs(graph, x_vertices, mate, x_index):
                     mate_size += 1
 
-    return (mate_size, mate)
+    return (get_final_mate_size(mate), mate)
 
+def get_final_mate_size(mate):
+    final_size = 0
+    for i in mate:
+        if i != 0 and i != None:
+            final_size += 1
+    return final_size
 
 def hopcroft_karp_bfs(graph: Graph, x_vertices: list, mate: list):
     '''

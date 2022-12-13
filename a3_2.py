@@ -13,8 +13,7 @@ from source.algorithms import hopcroft_karp
 file = "pequeno.net"
 graph = Graph(join("graphs", file))
 
-print(graph)
+result = hopcroft_karp(graph, [1, 2, 3])
 
-test = hopcroft_karp(graph, [1, 2, 3])
-
-print(test)
+print(f"Emparelhamento máximo: {result[0]}")
+print(result[1])
