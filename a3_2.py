@@ -9,8 +9,7 @@ from source.graph import Graph
 from source.algorithms import hopcroft_karp
 
 
-# file = input("Grafo a ser usado: ")
-file = "pequeno.net"
+file = input("Grafo a ser usado: ")
 graph = Graph(join("graphs", file))
 
 result = hopcroft_karp(graph, [1, 2, 3])
